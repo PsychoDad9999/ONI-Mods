@@ -70,7 +70,6 @@ namespace OniMods.FixedOreScrubber
             /// <summary>
             /// Instead of fixing ScrubOreReactable::InternalCanBegin it's much easier to normalize the dupes facing direction after the animation has completed
             /// </summary>
-            /// <param name="worker"></param>
             static void Prefix(Worker worker)
             {
                 GameObject obj = worker?.gameObject;
