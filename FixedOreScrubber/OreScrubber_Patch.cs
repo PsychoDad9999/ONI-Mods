@@ -1,19 +1,20 @@
-﻿using Harmony;
-using Klei;
+﻿// ----------------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+
+using Harmony;
 using UnityEngine;
 
+// ----------------------------------------------------------------------------
 
-namespace Fixed_Ore_Scrubber
+namespace OniMods.FixedOreScrubber
 {
     public class Patches
     {
-
         [HarmonyPatch(typeof(OreScrubber.States))]
         [HarmonyPatch(nameof(OreScrubber.States.InitializeStates))]
         static class OreScrubber_States_InitializeStates_Patch
@@ -28,11 +29,9 @@ namespace Fixed_Ore_Scrubber
             /// </summary>
             private static FieldInfo f_ready = AccessTools.Field(typeof(OreScrubber.States), nameof(OreScrubber.States.ready));
 
-            /// <summary>
-            /// Set TargetState of WorkableStopTransition to States.notready field
+            /// <summary>            
+            /// Change TargetState of Occupied-WorkableStopTransition, so ScrubOreReactable is repeatable
             /// </summary>
-            /// <param name="instructions"></param>
-            /// <returns></returns>
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
                 List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
@@ -68,6 +67,10 @@ namespace Fixed_Ore_Scrubber
         [HarmonyPatch("OnCompleteWork")]
         static class OreScrubber_Work_OnCompleteWork_Patch
         {
+            /// <summary>
+            /// Instead of fixing ScrubOreReactable::InternalCanBegin it's much easier to normalize the dupes facing direction after the animation has completed
+            /// </summary>
+            /// <param name="worker"></param>
             static void Prefix(Worker worker)
             {
                 GameObject obj = worker?.gameObject;
@@ -75,7 +78,7 @@ namespace Fixed_Ore_Scrubber
 
                 if (dupe != null)
                 {
-                    // Mirror dupes facing direction
+                    // Mirror dupes facing direction to the inital direction
                     dupe.GetComponent<Facing>()?.SetFacing(true);                                       
                 }
             }
