@@ -72,8 +72,7 @@ namespace OniMods.FixedOreScrubber
             /// </summary>
             static void Prefix(Worker worker)
             {
-                GameObject obj = worker?.gameObject;
-                PrimaryElement dupe = obj?.GetComponent<PrimaryElement>();              
+                PrimaryElement dupe = worker?.gameObject?.GetComponent<PrimaryElement>();              
 
                 if (dupe != null)
                 {
