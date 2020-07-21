@@ -84,7 +84,7 @@ namespace OniMods.FixedOreScrubber
                         
                         if(nextTransition.x < 0)
                         {
-                            // Mirror dupes facing direction to the inital direction
+                            // Mirror dupes facing direction to the initial direction
                             dupe.GetComponent<Facing>()?.SetFacing(true);
                         }
                     }                                         
