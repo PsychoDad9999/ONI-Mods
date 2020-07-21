@@ -72,12 +72,22 @@ namespace OniMods.FixedOreScrubber
             /// </summary>
             static void Prefix(Worker worker)
             {
-                PrimaryElement dupe = worker?.gameObject?.GetComponent<PrimaryElement>();              
+                PrimaryElement dupe = worker?.gameObject?.GetComponent<PrimaryElement>();
 
                 if (dupe != null)
                 {
-                    // Mirror dupes facing direction to the inital direction
-                    dupe.GetComponent<Facing>()?.SetFacing(true);                                       
+                    Navigator navigator = dupe.GetComponent<Navigator>();
+
+                    if(navigator != null)
+                    {                        
+                        NavGrid.Transition nextTransition = navigator.GetNextTransition();
+                        
+                        if(nextTransition.x < 0)
+                        {
+                            // Mirror dupes facing direction to the inital direction
+                            dupe.GetComponent<Facing>()?.SetFacing(true);
+                        }
+                    }                                         
                 }
             }
         }
