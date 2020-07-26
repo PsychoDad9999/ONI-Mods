@@ -2,11 +2,13 @@
 
 using Newtonsoft.Json;
 using PeterHan.PLib;
+using PeterHan.PLib.Options;
 
 // ----------------------------------------------------------------------------
 
 namespace OniMods.FixedOreScrubber
 {
+    [RestartRequired]
     [JsonObject(MemberSerialization.OptIn)]
     public class FixedOreScrubberModSettings
     {

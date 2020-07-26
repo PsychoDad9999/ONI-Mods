@@ -1,8 +1,9 @@
 ﻿// ----------------------------------------------------------------------------
 
-using PeterHan.PLib.Options;
 using Harmony;
 using UnityEngine;
+
+using PeterHan.PLib.Options;
 
 // ----------------------------------------------------------------------------
 
@@ -14,10 +15,10 @@ namespace OniMods.FixedOreScrubber
     {
         static void Postfix(GameObject go, Tag prefab_tag)
         {
-            if(POptions.ReadSettings<FixedOreScrubberModSettings>()?.AllowStorageEjection == true)            
-            {
+            if(FixedOreScrubberMod.Options.AllowStorageEjection)
+            {         
                 go.AddOrGet<DropAllWorkable>();
             }
         }
-    }    
+    }
 }
