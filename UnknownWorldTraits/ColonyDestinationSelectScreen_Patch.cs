@@ -53,7 +53,7 @@ namespace OniMods.UnknownWorldTraits
         {
             if(useTraitTextColor)
             {
-                string colorHex = GetHexColor(originalTraitDescriptorText);
+                string colorHex = GetHexColorFromTextDescriptior(originalTraitDescriptorText);
 
                 if(colorHex != null)
                 {
@@ -65,12 +65,15 @@ namespace OniMods.UnknownWorldTraits
         }
 
 
-
-        private static string GetHexColor(string text)
+        /// <summary>
+        /// Get Hex Color Value from text descriptor
+        /// </summary>        
+        /// <returns>hex color string or null</returns>
+        private static string GetHexColorFromTextDescriptior(string textDescriptor)
         {
             string pattern = @"<color=#([0-9a-fA-F]{6})>.*<\/color>";
 
-            Match match = Regex.Match(text, pattern);
+            Match match = Regex.Match(textDescriptor, pattern);
                 
             if (match.Success && match.Groups.Count > 1)
             {                    
