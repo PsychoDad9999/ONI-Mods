@@ -3,8 +3,6 @@
 using Harmony;
 using UnityEngine;
 
-using PeterHan.PLib.Options;
-
 // ----------------------------------------------------------------------------
 
 namespace OniMods.FixedOreScrubber

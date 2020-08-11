@@ -12,7 +12,7 @@ namespace OniMods.FixedOreScrubber
     [JsonObject(MemberSerialization.OptIn)]
     public class FixedOreScrubberModSettings
     {
-        [Option("Allow storage ejection", "Adds a button to the ore scrubber to safely eject all resources.")]
+        [Option("Allow storage ejection", "Adds a button to the ore scrubber to safely eject the chlorine gas.")]
         [JsonProperty]
         public bool AllowStorageEjection { get; set; }
 
