@@ -1,2 +1,2 @@
 # ONI-Mods
-Mods for Oxygen not included
+Mods for Oxygen Not Included
