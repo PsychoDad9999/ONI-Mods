@@ -7,8 +7,11 @@ using PeterHan.PLib;
 
 namespace OniMods.UnknownWorldTraits
 {
+    /// <summary>
+    /// Mod Settings
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class UnknownWorldTraitsModSettings
+    public sealed class UnknownWorldTraitsModSettings
     {
         [Option("Display trait color", "Display trait color.")]
         [JsonProperty]

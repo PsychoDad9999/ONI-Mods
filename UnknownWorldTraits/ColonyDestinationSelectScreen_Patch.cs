@@ -16,64 +16,81 @@ namespace OniMods.UnknownWorldTraits
     [HarmonyPatch("SettingChanged")]
     static class ColonyDestinationSelectScreen_SettingChanged_Patch
     {
+        /// <summary>
+        /// Patch ColonyDestinationSelectScreen.SettingChanged to replace displayed Trait Descriptors
+        /// </summary>        
         static void Postfix(ref NewGameSettingsPanel ___newGameSettings, ref DestinationSelectPanel ___destinationMapPanel, ref AsteroidDescriptorPanel ___startLocationProperties)
         {
             string setting = ___newGameSettings.GetSetting(CustomGameSettingConfigs.World);
             int.TryParse(___newGameSettings.GetSetting(CustomGameSettingConfigs.WorldgenSeed), out int result);
             ColonyDestinationAsteroidData colonyDestinationAsteroidData = ___destinationMapPanel.SelectAsteroid(setting, result);
 
-            ___startLocationProperties.SetDescriptors(ModifyTraitDescriptors(colonyDestinationAsteroidData.GetTraitDescriptors()));
-        }
-
-
-        private static IList<AsteroidDescriptor> ModifyTraitDescriptors(IList<AsteroidDescriptor> descriptors)
-        {
-            // Read Mod Settings
-            UnknownWorldTraitsModSettings modSettings = POptions.ReadSettings<UnknownWorldTraitsModSettings>() ?? new UnknownWorldTraitsModSettings();                        
-
-            for (int i = 0; i < descriptors.Count; i++)
-            {
-                if (descriptors[i].text == WORLD_TRAITS.NO_TRAITS.NAME)
-                    continue;
-
-                AsteroidDescriptor traitDescriptor;
-                traitDescriptor.text = ChangeTraitDescriptorText(descriptors[i].text, "???", modSettings.ShowTraitColor);
-                traitDescriptor.tooltip = "Unknown world trait";
-                traitDescriptor.bands = descriptors[i].bands;
-
-                descriptors[i] = traitDescriptor;
-            }
-
-            return descriptors;
-        }
-
-
-
-        private static string ChangeTraitDescriptorText(string originalTraitDescriptorText, string newTraitDescriptorText, bool useTraitTextColor)
-        {
-            if(useTraitTextColor)
-            {
-                string colorHex = GetHexColorFromTextDescriptior(originalTraitDescriptorText);
-
-                if(colorHex != null)
-                {
-                    return string.Format("<color=#{1}>{0}</color>", newTraitDescriptorText, colorHex);                    
-                }                
-            }
-
-            return newTraitDescriptorText;            
+            ___startLocationProperties.SetDescriptors(GetModifiedTraitDescriptors(colonyDestinationAsteroidData.GetTraitDescriptors()));
         }
 
 
         /// <summary>
-        /// Get Hex Color Value from text descriptor
+        /// Get modified Trait Descriptors
+        /// </summary>
+        /// <param name="traitDescriptors">List of Trait descriptors</param>
+        /// <returns>Returns a List of modified Trait Descriptors</returns>
+        private static IList<AsteroidDescriptor> GetModifiedTraitDescriptors(IList<AsteroidDescriptor> traitDescriptors)
+        {            
+            // Read Mod Settings
+            UnknownWorldTraitsModSettings modSettings = POptions.ReadSettings<UnknownWorldTraitsModSettings>() ?? new UnknownWorldTraitsModSettings();                        
+
+            for (int i = 0; i < traitDescriptors.Count; i++)
+            {
+                // skip if world has no Traits, e.g. Terra
+                if (traitDescriptors[i].text == WORLD_TRAITS.NO_TRAITS.NAME)
+                    continue;
+
+                AsteroidDescriptor traitDescriptor;
+                traitDescriptor.text = CreateTraitDescriptorText(traitDescriptors[i].text, "???", modSettings.ShowTraitColor);
+                traitDescriptor.tooltip = "Unknown world trait";
+                traitDescriptor.bands = traitDescriptors[i].bands;
+
+                traitDescriptors[i] = traitDescriptor;
+            }
+
+            return traitDescriptors;
+        }
+
+
+        /// <summary>
+        /// Create Trait Descriptor Text
+        /// </summary>
+        /// <param name="originalTraitDescriptorText">Original color formated text descriptor, e.g.<color=#FFFFFF>Test</color></param>
+        /// <param name="newDescriptorText">New Text, e.g. Test2</param>
+        /// <param name="useTraitTextColor">True to use color formatation of original text descriptor</param>
+        /// <returns>Returns either a text descriptor or a color formated text descriptor</returns>        
+        private static string CreateTraitDescriptorText(string originalTraitDescriptorText, string newDescriptorText, bool useTraitTextColor)
+        {
+            if(useTraitTextColor)
+            {
+                string colorHex = GetHexColorFromDescriptor(originalTraitDescriptorText);
+
+                if(colorHex != null)
+                {
+                    return string.Format("<color=#{1}>{0}</color>", newDescriptorText, colorHex);                    
+                }                
+            }
+
+            return newDescriptorText;            
+        }
+
+
+        /// <summary>
+        /// Get Hex Color Value from descriptor
         /// </summary>        
+        /// <param name="colorFormatedText">Color formated text descriptor, e.g.<color=#FFFFFF>Test</color></param>
         /// <returns>hex color string or null</returns>
-        private static string GetHexColorFromTextDescriptior(string textDescriptor)
+        /// <example>Returns FFFFFF if colorFormatedText is <color=#FFFFFF>Test</color></example>
+        private static string GetHexColorFromDescriptor(string colorFormatedText)
         {
             string pattern = @"<color=#([0-9a-fA-F]{6})>.*<\/color>";
 
-            Match match = Regex.Match(textDescriptor, pattern);
+            Match match = Regex.Match(colorFormatedText, pattern);
                 
             if (match.Success && match.Groups.Count > 1)
             {                    

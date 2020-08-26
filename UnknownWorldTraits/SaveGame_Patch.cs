@@ -49,11 +49,10 @@ namespace OniMods.UnknownWorldTraits
                                 lastCodeInstruction.opcode == OpCodes.Call && lastCodeInstruction.operand as MethodInfo == stringEntry_Implicit)
                             {
                                 // Patch ToolTip
-                                codes[i - 1].opcode = OpCodes.Nop;
-                                codes[i].opcode = OpCodes.Ldstr;
-                                codes[i].operand = "???";
-                                codes[i + 1].opcode = OpCodes.Nop;
-                                codes[i + 2].opcode = OpCodes.Nop;
+                                codes[i - 1] = new CodeInstruction(OpCodes.Nop);
+                                codes[i] = new CodeInstruction(OpCodes.Ldstr, "???");
+                                codes[i + 1] = new CodeInstruction(OpCodes.Nop);
+                                codes[i + 2] = new CodeInstruction(OpCodes.Nop);
                                 break;
                             }
                         }                        
