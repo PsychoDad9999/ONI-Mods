@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 using Harmony;
+using PeterHan.PLib.Options;
 
 // ----------------------------------------------------------------------------
 
@@ -33,22 +34,27 @@ namespace OniMods.FixedOreScrubber
         {
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
 
-            if (f_notready != null && f_ready != null)
-            {                    
-                for (int i = 0; i < codes.Count; i++)
-                {                            
-                    if (codes[i].opcode == OpCodes.Ldfld && codes[i].operand as FieldInfo == f_ready)
-                    {                                
-                        int iNext = i + 1;
+            FixedOreScrubberModSettings modSettings = POptions.ReadSettings<FixedOreScrubberModSettings>() ?? new FixedOreScrubberModSettings();
 
-                        if (iNext < codes.Count && codes[iNext].operand is MethodInfo nextOperand)
+            if (modSettings.RepeatedScubbing)
+            {
+                if (f_notready != null && f_ready != null)
+                {
+                    for (int i = 0; i < codes.Count; i++)
+                    {
+                        if (codes[i].opcode == OpCodes.Ldfld && codes[i].operand as FieldInfo == f_ready)
                         {
-                            // check if next instruction is WorkableStopTransition method
-                            if (nextOperand.Name == nameof(GameStateMachine<OreScrubber.States, OreScrubber.SMInstance, OreScrubber>.State.WorkableStopTransition))
+                            int iNext = i + 1;
+
+                            if (iNext < codes.Count && codes[iNext].operand is MethodInfo nextOperand)
                             {
-                                // Replace f_ready with f_notready
-                                codes[i].operand = f_notready;
-                                break;
+                                // check if next instruction is WorkableStopTransition method
+                                if (nextOperand.Name == nameof(GameStateMachine<OreScrubber.States, OreScrubber.SMInstance, OreScrubber>.State.WorkableStopTransition))
+                                {
+                                    // Replace f_ready with f_notready
+                                    codes[i].operand = f_notready;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -69,22 +75,25 @@ namespace OniMods.FixedOreScrubber
         /// </summary>
         static void Prefix(Worker worker)
         {
-            PrimaryElement dupe = worker?.gameObject?.GetComponent<PrimaryElement>();
-
-            if (dupe != null)
+            if (FixedOreScrubberMod.Options.RepeatedScubbing)
             {
-                Navigator navigator = dupe.GetComponent<Navigator>();
+                PrimaryElement dupe = worker?.gameObject?.GetComponent<PrimaryElement>();
 
-                if(navigator != null)
-                {                        
-                    NavGrid.Transition nextTransition = navigator.GetNextTransition();
-                        
-                    if(nextTransition.x < 0)
+                if (dupe != null)
+                {
+                    Navigator navigator = dupe.GetComponent<Navigator>();
+
+                    if (navigator != null)
                     {
-                        // Mirror dupes facing direction to the initial direction
-                        dupe.GetComponent<Facing>()?.SetFacing(true);
+                        NavGrid.Transition nextTransition = navigator.GetNextTransition();
+
+                        if (nextTransition.x < 0)
+                        {
+                            // Mirror dupes facing direction to the initial direction
+                            dupe.GetComponent<Facing>()?.SetFacing(true);
+                        }
                     }
-                }                                         
+                }
             }
         }
     }    
