@@ -41,7 +41,9 @@ namespace OniMods.PacuPathingFix
         /// <returns>true if there is a liquid, otherwise false</returns>
         private static bool IsLiquidAbove(int cell)
         {
-            return Grid.IsValidCell(Grid.CellAbove(cell)) && Grid.IsLiquid(Grid.CellAbove(cell));
+            int cellAbove = Grid.CellAbove(cell);
+
+            return Grid.IsValidCell(cellAbove) && Grid.IsLiquid(cellAbove);
         }
 
         /// <summary>
@@ -50,7 +52,9 @@ namespace OniMods.PacuPathingFix
         /// <returns>true if there is a liquid, otherwise false</returns>
         private static bool IsLiquidBelow(int cell)
         {
-            return Grid.IsValidCell(Grid.CellBelow(cell)) && Grid.IsLiquid(Grid.CellBelow(cell));
+            int cellBelow = Grid.CellBelow(cell);
+
+            return Grid.IsValidCell(cellBelow) && Grid.IsLiquid(cellBelow);
         }
 
         /// <summary>
