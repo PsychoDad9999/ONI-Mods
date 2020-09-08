@@ -12,15 +12,8 @@ namespace OniMods.FixedOreScrubber
     static class OreScrubberConfig_ConfigureBuildingTemplate
     {
         static void Postfix(GameObject go, Tag prefab_tag)
-        {            
-            OreScrubber oreScrubber = go.AddOrGet<OreScrubber>();
-
-            if(oreScrubber != null)
-            {
-                oreScrubber.diseaseRemovalCount = FixedOreScrubberMod.Options.DiseaseRemovalCount;
-            }
-
-            if (FixedOreScrubberMod.Options.AllowStorageEjection)
+        {
+            if(FixedOreScrubberMod.Options.AllowStorageEjection)
             {         
                 go.AddOrGet<DropAllWorkable>();
             }

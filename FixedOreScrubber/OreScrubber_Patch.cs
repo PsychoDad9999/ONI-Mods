@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 using Harmony;
-using PeterHan.PLib.Options;
 
 // ----------------------------------------------------------------------------
 
@@ -34,27 +33,22 @@ namespace OniMods.FixedOreScrubber
         {
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
 
-            FixedOreScrubberModSettings modSettings = POptions.ReadSettings<FixedOreScrubberModSettings>() ?? new FixedOreScrubberModSettings();
+            if (f_notready != null && f_ready != null)
+            {                    
+                for (int i = 0; i < codes.Count; i++)
+                {                            
+                    if (codes[i].opcode == OpCodes.Ldfld && codes[i].operand as FieldInfo == f_ready)
+                    {                                
+                        int iNext = i + 1;
 
-            if (modSettings.RepeatedScubbing)
-            {
-                if (f_notready != null && f_ready != null)
-                {
-                    for (int i = 0; i < codes.Count; i++)
-                    {
-                        if (codes[i].opcode == OpCodes.Ldfld && codes[i].operand as FieldInfo == f_ready)
+                        if (iNext < codes.Count && codes[iNext].operand is MethodInfo nextOperand)
                         {
-                            int iNext = i + 1;
-
-                            if (iNext < codes.Count && codes[iNext].operand is MethodInfo nextOperand)
+                            // check if next instruction is WorkableStopTransition method
+                            if (nextOperand.Name == nameof(GameStateMachine<OreScrubber.States, OreScrubber.SMInstance, OreScrubber>.State.WorkableStopTransition))
                             {
-                                // check if next instruction is WorkableStopTransition method
-                                if (nextOperand.Name == nameof(GameStateMachine<OreScrubber.States, OreScrubber.SMInstance, OreScrubber>.State.WorkableStopTransition))
-                                {
-                                    // Replace f_ready with f_notready
-                                    codes[i].operand = f_notready;
-                                    break;
-                                }
+                                // Replace f_ready with f_notready
+                                codes[i].operand = f_notready;
+                                break;
                             }
                         }
                     }
@@ -75,25 +69,22 @@ namespace OniMods.FixedOreScrubber
         /// </summary>
         static void Prefix(Worker worker)
         {
-            if (FixedOreScrubberMod.Options.RepeatedScubbing)
+            PrimaryElement dupe = worker?.gameObject?.GetComponent<PrimaryElement>();
+
+            if (dupe != null)
             {
-                PrimaryElement dupe = worker?.gameObject?.GetComponent<PrimaryElement>();
+                Navigator navigator = dupe.GetComponent<Navigator>();
 
-                if (dupe != null)
-                {
-                    Navigator navigator = dupe.GetComponent<Navigator>();
-
-                    if (navigator != null)
+                if(navigator != null)
+                {                        
+                    NavGrid.Transition nextTransition = navigator.GetNextTransition();
+                        
+                    if(nextTransition.x < 0)
                     {
-                        NavGrid.Transition nextTransition = navigator.GetNextTransition();
-
-                        if (nextTransition.x < 0)
-                        {
-                            // Mirror dupes facing direction to the initial direction
-                            dupe.GetComponent<Facing>()?.SetFacing(true);
-                        }
+                        // Mirror dupes facing direction to the initial direction
+                        dupe.GetComponent<Facing>()?.SetFacing(true);
                     }
-                }
+                }                                         
             }
         }
     }    
