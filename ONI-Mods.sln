@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnknownWorldTraits", "Unkno
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacuPathingFix", "PacuPathingFix\PacuPathingFix.csproj", "{BA00E955-C4A4-4304-89DA-EB7E8752ECC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultOffSwitch", "DefaultOffSwitch\DefaultOffSwitch.csproj", "{8C500814-C121-4617-B292-4DD6999C3123}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BA00E955-C4A4-4304-89DA-EB7E8752ECC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA00E955-C4A4-4304-89DA-EB7E8752ECC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA00E955-C4A4-4304-89DA-EB7E8752ECC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C500814-C121-4617-B292-4DD6999C3123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C500814-C121-4617-B292-4DD6999C3123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C500814-C121-4617-B292-4DD6999C3123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C500814-C121-4617-B292-4DD6999C3123}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
