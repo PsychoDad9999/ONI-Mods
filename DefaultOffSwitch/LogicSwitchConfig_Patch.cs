@@ -17,7 +17,7 @@ namespace OniMods.DefaultOffSwitch
         static void Postfix(GameObject go)
         {
             // Set default state
-            go.AddOrGet<LogicSwitch>().defaultState = false;           
+            go.AddOrGet<LogicSwitch>().defaultState = DefaultOffSwitch.Options.SignalSwitchDefaultState == DefaultOffSwitchSettings.SwitchState.On;
         }
     }
 }
