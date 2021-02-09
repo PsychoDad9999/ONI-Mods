@@ -1,58 +1,62 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BA00E955-C4A4-4304-89DA-EB7E8752ECC6}</ProjectGuid>
+    <TargetFramework>net40</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OniMods.PacuPathingFix</RootNamespace>
+    <Configurations>Vanilla;DLC1</Configurations>
     <AssemblyName>PacuPathingFix</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <Authors>PsychoDad</Authors>
+    <FileVersion>1.1.0.0</FileVersion>
+    <Copyright>Copyright © PsychoDad 2021</Copyright>
+    <Product>Pacu Pathing Fix</Product>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+ 
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\lib\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony" Condition="'$(Configuration)'=='Vanilla'">
+      <HintPath>..\..\lib\Vanilla\0Harmony.dll</HintPath>
+      <Private>false</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
+    <Reference Include="0Harmony" Condition="'$(Configuration)'=='DLC1'">
+      <HintPath>..\..\lib\DLC1\0Harmony.dll</HintPath>
+      <Private>false</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\lib\Assembly-CSharp-firstpass.dll</HintPath>
+    <Reference Include="Assembly-CSharp" Condition="'$(Configuration)'=='Vanilla'">
+      <HintPath>..\..\lib\Vanilla\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\lib\UnityEngine.dll</HintPath>
+    <Reference Include="Assembly-CSharp" Condition="'$(Configuration)'=='DLC1'">
+      <HintPath>..\..\lib\DLC1\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="Assembly-CSharp-firstpass" Condition="'$(Configuration)'=='Vanilla'">
+      <HintPath>..\..\lib\Vanilla\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass" Condition="'$(Configuration)'=='DLC1'">
+      <HintPath>..\..\lib\DLC1\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>false</Private>
     </Reference>
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SwimValidator_Patch.cs" />
+    <Content Include="Vanilla\mod_info.yaml" Link="\%(Filename)%(Extension)" Condition="'$(Configuration)'=='Vanilla'">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DLC1\mod_info.yaml" Link="\%(Filename)%(Extension)" Condition="'$(Configuration)'=='DLC1'">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  
+  <ItemGroup>
+    <Compile Remove="Vanilla\*.cs" Condition="'$(Configuration)'!='Vanilla'" />
+    <None Include="Vanilla\*.cs" Condition="'$(Configuration)'!='Vanilla'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DLC1\*.cs" Condition="'$(Configuration)'!='DLC1'" />
+    <None Include="DLC1\*.cs" Condition="'$(Configuration)'!='DLC1'" />
+  </ItemGroup>
+
+  
 </Project>

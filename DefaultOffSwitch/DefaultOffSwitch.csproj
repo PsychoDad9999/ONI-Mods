@@ -3,7 +3,7 @@
     <TargetFramework>net40</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>OniMods.DefaultOffSwitch</RootNamespace>
-    <Configurations>Release</Configurations>
+    <Configurations>Release;Vanilla;DLC1</Configurations>
     <AssemblyName>DefaultOffSwitch</AssemblyName>
     <Authors>PsychoDad</Authors>
     <FileVersion>1.2.0.0</FileVersion>
