@@ -19,12 +19,12 @@ namespace OniMods.FixedOreScrubber
         /// <summary>
         /// States.notready field
         /// </summary>
-        private static FieldInfo f_notready = AccessTools.Field(typeof(OreScrubber.States), nameof(OreScrubber.States.notready));
+        private static readonly FieldInfo f_notready = AccessTools.Field(typeof(OreScrubber.States), nameof(OreScrubber.States.notready));
 
         /// <summary>
         /// States.ready field
         /// </summary>
-        private static FieldInfo f_ready = AccessTools.Field(typeof(OreScrubber.States), nameof(OreScrubber.States.ready));
+        private static readonly FieldInfo f_ready = AccessTools.Field(typeof(OreScrubber.States), nameof(OreScrubber.States.ready));
 
         /// <summary>            
         /// Change TargetState of Occupied-WorkableStopTransition, so ScrubOreReactable is repeatable
