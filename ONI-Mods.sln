@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixedOreScrubber", "FixedOreScrubber\FixedOreScrubber.csproj", "{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedOreScrubber", "FixedOreScrubber\FixedOreScrubber.csproj", "{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnknownWorldTraits", "UnknownWorldTraits\UnknownWorldTraits.csproj", "{DB94D5D7-1EE1-4BEB-A595-184600EFE941}"
 EndProject
@@ -19,12 +19,12 @@ Global
 		Vanilla|Any CPU = Vanilla|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.Debug|Any CPU.ActiveCfg = Vanilla|Any CPU
+		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.Debug|Any CPU.Build.0 = Vanilla|Any CPU
 		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.DLC1|Any CPU.ActiveCfg = DLC1|Any CPU
 		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.DLC1|Any CPU.Build.0 = DLC1|Any CPU
-		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.Release|Any CPU.ActiveCfg = Vanilla|Any CPU
+		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.Release|Any CPU.Build.0 = Vanilla|Any CPU
 		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.Vanilla|Any CPU.ActiveCfg = Vanilla|Any CPU
 		{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}.Vanilla|Any CPU.Build.0 = Vanilla|Any CPU
 		{DB94D5D7-1EE1-4BEB-A595-184600EFE941}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

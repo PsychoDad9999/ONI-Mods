@@ -9,7 +9,7 @@ namespace OniMods.FixedOreScrubber
 {
     [HarmonyPatch(typeof(OreScrubberConfig))]
     [HarmonyPatch(nameof(OreScrubberConfig.ConfigureBuildingTemplate))]
-    static class OreScrubberConfig_ConfigureBuildingTemplate
+    public static class OreScrubberConfig_ConfigureBuildingTemplate
     {
         static void Postfix(GameObject go, Tag prefab_tag)
         {
