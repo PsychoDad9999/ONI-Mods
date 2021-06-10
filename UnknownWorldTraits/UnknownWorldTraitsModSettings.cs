@@ -13,7 +13,7 @@ namespace OniMods.UnknownWorldTraits
     [JsonObject(MemberSerialization.OptIn)]
     public sealed class UnknownWorldTraitsModSettings
     {
-        [Option("Display trait color", "Display trait color.")]
+        [Option("Display trait color", "Show trait color hint.")]
         [JsonProperty]
         public bool ShowTraitColor { get; set; }
 

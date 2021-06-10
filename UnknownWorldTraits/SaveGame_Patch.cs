@@ -50,7 +50,7 @@ namespace OniMods.UnknownWorldTraits
                             {
                                 // Patch ToolTip
                                 codes[i - 1] = new CodeInstruction(OpCodes.Nop);
-                                codes[i] = new CodeInstruction(OpCodes.Ldstr, "???");
+                                codes[i] = new CodeInstruction(OpCodes.Ldstr, "[REDACTED]");
                                 codes[i + 1] = new CodeInstruction(OpCodes.Nop);
                                 codes[i + 2] = new CodeInstruction(OpCodes.Nop);
                                 break;

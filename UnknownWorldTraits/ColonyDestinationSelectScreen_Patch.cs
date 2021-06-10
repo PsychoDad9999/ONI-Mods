@@ -46,8 +46,8 @@ namespace OniMods.UnknownWorldTraits
                     continue;
 
                 AsteroidDescriptor traitDescriptor;
-                traitDescriptor.text = CreateTraitDescriptorText(traitDescriptors[i].text, "???", modSettings.ShowTraitColor);
-                traitDescriptor.tooltip = "Unknown world trait";
+                traitDescriptor.text = CreateTraitDescriptorText(traitDescriptors[i].text, "[REDACTED]", modSettings.ShowTraitColor);
+                traitDescriptor.tooltip = "Classified by Gravitas security protocol";
                 traitDescriptor.bands = traitDescriptors[i].bands;
 
                 traitDescriptors[i] = traitDescriptor;
