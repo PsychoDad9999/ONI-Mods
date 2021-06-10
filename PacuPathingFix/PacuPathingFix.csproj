@@ -4,6 +4,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>OniMods.PacuPathingFix</RootNamespace>
     <Configurations>Vanilla;DLC1</Configurations>
+    <Optimize>true</Optimize>
     <AssemblyName>PacuPathingFix</AssemblyName>
     <Authors>PsychoDad</Authors>
     <FileVersion>1.1.0.0</FileVersion>

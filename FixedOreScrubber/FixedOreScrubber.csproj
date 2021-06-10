@@ -4,6 +4,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>OniMods.FixedOreScrubber</RootNamespace>
     <Configurations>Vanilla;DLC1</Configurations>
+    <Optimize>true</Optimize>
     <AssemblyName>FixedOreScrubber</AssemblyName>
     <Authors>PsychoDad</Authors>
     <FileVersion>1.4.0.0</FileVersion>    
