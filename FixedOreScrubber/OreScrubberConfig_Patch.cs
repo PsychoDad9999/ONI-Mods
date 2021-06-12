@@ -13,7 +13,9 @@ namespace OniMods.FixedOreScrubber
     {
         static void Postfix(GameObject go, Tag prefab_tag)
         {
-            if(FixedOreScrubberMod.Options.AllowStorageEjection)
+            go.AddOrGet<OreScrubber>().diseaseRemovalCount = FixedOreScrubberMod.Options.GermRemovalAmount;
+
+            if (FixedOreScrubberMod.Options.AllowStorageEjection)
             {         
                 go.AddOrGet<DropAllWorkable>();
             }

@@ -16,12 +16,18 @@ namespace OniMods.FixedOreScrubber
         [JsonProperty]
         public bool AllowStorageEjection { get; set; }
 
+        [Option("Germs removal per use", "Amount of germs to remove per use.")]
+        [JsonProperty]
+        [Limit(480000, 5000000)]
+        public int GermRemovalAmount { get; set; }
+
         /// <summary>
         /// Ctor
         /// </summary>
         public FixedOreScrubberModSettings()
         {
             AllowStorageEjection = true; // default if the config doesn't exist
+            GermRemovalAmount = 480000;
         }
     }
 }

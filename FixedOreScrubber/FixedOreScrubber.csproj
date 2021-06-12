@@ -7,58 +7,47 @@
     <Optimize>true</Optimize>
     <AssemblyName>FixedOreScrubber</AssemblyName>
     <Authors>PsychoDad</Authors>
-    <FileVersion>1.4.0.0</FileVersion>    
-    <AssemblyVersion>1.4.0.0</AssemblyVersion>
+    <FileVersion>1.6.0.0</FileVersion>    
+    <AssemblyVersion>1.6.0.0</AssemblyVersion>
     <Copyright>Copyright © PsychoDad 2021</Copyright>
     <Product>Fixed Ore Scrubber</Product>    
+  </PropertyGroup>  
+  <PropertyGroup>
+    <LibIncludeFolder>..\..\lib\</LibIncludeFolder>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Vanilla'">
+    <GameRefIncludeFolder>$(LibIncludeFolder)Vanilla\</GameRefIncludeFolder>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='DLC1'">
+    <GameRefIncludeFolder>$(LibIncludeFolder)DLC1\</GameRefIncludeFolder>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ILMerge" Version="3.0.41" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="0Harmony" Condition="'$(Configuration)'=='Vanilla'">
-      <HintPath>..\..\lib\Vanilla\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony">
+      <HintPath>$(GameRefIncludeFolder)0Harmony.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="0Harmony" Condition="'$(Configuration)'=='DLC1'">
-      <HintPath>..\..\lib\DLC1\0Harmony.dll</HintPath>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(GameRefIncludeFolder)Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp" Condition="'$(Configuration)'=='Vanilla'">
-      <HintPath>..\..\lib\Vanilla\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>$(GameRefIncludeFolder)Assembly-CSharp-firstpass.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp" Condition="'$(Configuration)'=='DLC1'">
-      <HintPath>..\..\lib\DLC1\Assembly-CSharp.dll</HintPath>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(GameRefIncludeFolder)UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp-firstpass" Condition="'$(Configuration)'=='Vanilla'">
-      <HintPath>..\..\lib\Vanilla\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass" Condition="'$(Configuration)'=='DLC1'">
-      <HintPath>..\..\lib\DLC1\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule" Condition="'$(Configuration)'=='Vanilla'">
-      <HintPath>..\..\lib\Vanilla\UnityEngine.CoreModule.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule" Condition="'$(Configuration)'=='DLC1'">
-      <HintPath>..\..\lib\DLC1\UnityEngine.CoreModule.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json" Condition="'$(Configuration)'=='Vanilla'">
-      <HintPath>..\..\lib\Vanilla\Newtonsoft.Json.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json" Condition="'$(Configuration)'=='DLC1'">
-      <HintPath>..\..\lib\DLC1\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(GameRefIncludeFolder)Newtonsoft.Json.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="PLibOptions">
-      <HintPath>..\..\lib\PLibOptions.dll</HintPath>
-    </Reference>
+      <HintPath>$(LibIncludeFolder)\PLibOptions.dll</HintPath>
+    </Reference>    
   </ItemGroup>
 
   <ItemGroup>
@@ -69,7 +58,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
 
   <ItemGroup>
     <Compile Remove="Vanilla\*.cs" Condition="'$(Configuration)'!='Vanilla'" />
@@ -82,7 +70,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&quot;$(ILMergeConsolePath)&quot; /lib:..\..\lib\ /ndebug /v4 /out:&quot;$(OutDir)$(TargetName)Merged.dll&quot; &quot;$(OutDir)$(TargetFileName)&quot; &quot;$(OutDir)PLibOptions.dll&quot;" />
+    <Exec Command="&quot;$(ILMergeConsolePath)&quot; /lib:$(GameRefIncludeFolder) /ndebug /v4 /out:&quot;$(OutDir)$(TargetName).dll&quot; &quot;$(OutDir)$(TargetFileName)&quot; &quot;$(OutDir)PLibOptions.dll&quot;" />
   </Target>
 
 </Project>
