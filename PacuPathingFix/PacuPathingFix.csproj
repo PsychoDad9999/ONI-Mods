@@ -11,30 +11,26 @@
     <Copyright>Copyright © PsychoDad 2021</Copyright>
     <Product>Pacu Pathing Fix</Product>
   </PropertyGroup>
- 
+  <PropertyGroup>
+    <LibIncludeFolder>..\..\lib\</LibIncludeFolder>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Vanilla'">
+    <GameRefIncludeFolder>$(LibIncludeFolder)Vanilla\</GameRefIncludeFolder>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='DLC1'">
+    <GameRefIncludeFolder>$(LibIncludeFolder)DLC1\</GameRefIncludeFolder>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony" Condition="'$(Configuration)'=='Vanilla'">
-      <HintPath>..\..\lib\Vanilla\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony">
+      <HintPath>$(GameRefIncludeFolder)0Harmony.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="0Harmony" Condition="'$(Configuration)'=='DLC1'">
-      <HintPath>..\..\lib\DLC1\0Harmony.dll</HintPath>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(GameRefIncludeFolder)Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp" Condition="'$(Configuration)'=='Vanilla'">
-      <HintPath>..\..\lib\Vanilla\Assembly-CSharp.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp" Condition="'$(Configuration)'=='DLC1'">
-      <HintPath>..\..\lib\DLC1\Assembly-CSharp.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass" Condition="'$(Configuration)'=='Vanilla'">
-      <HintPath>..\..\lib\Vanilla\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass" Condition="'$(Configuration)'=='DLC1'">
-      <HintPath>..\..\lib\DLC1\Assembly-CSharp-firstpass.dll</HintPath>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>$(GameRefIncludeFolder)Assembly-CSharp-firstpass.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
@@ -47,7 +43,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
   
   <ItemGroup>
     <Compile Remove="Vanilla\*.cs" Condition="'$(Configuration)'!='Vanilla'" />
@@ -58,6 +53,5 @@
     <Compile Remove="DLC1\*.cs" Condition="'$(Configuration)'!='DLC1'" />
     <None Include="DLC1\*.cs" Condition="'$(Configuration)'!='DLC1'" />
   </ItemGroup>
-
   
 </Project>

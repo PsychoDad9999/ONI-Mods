@@ -8,34 +8,44 @@
     <AssemblyName>DefaultOffSwitch</AssemblyName>
     <Authors>PsychoDad</Authors>
     <FileVersion>1.2.0.0</FileVersion>
-    <Copyright>Copyright © PsychoDad 2021</Copyright>   
+    <Copyright>Copyright © PsychoDad 2021</Copyright>
+    <Product>Default Off Switch</Product>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LibIncludeFolder>..\..\lib\</LibIncludeFolder>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Vanilla'">
+    <GameRefIncludeFolder>$(LibIncludeFolder)Vanilla\</GameRefIncludeFolder>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='DLC1'">
+    <GameRefIncludeFolder>$(LibIncludeFolder)DLC1\</GameRefIncludeFolder>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ILMerge" Version="3.0.41" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\lib\0Harmony.dll</HintPath>
+      <HintPath>$(GameRefIncludeFolder)0Harmony.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(GameRefIncludeFolder)Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\lib\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>$(GameRefIncludeFolder)Assembly-CSharp-firstpass.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(GameRefIncludeFolder)UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(GameRefIncludeFolder)Newtonsoft.Json.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="PLibOptions">
-      <HintPath>..\..\lib\PLibOptions.dll</HintPath>
+      <HintPath>$(LibIncludeFolder)\PLibOptions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +55,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&quot;$(ILMergeConsolePath)&quot; /lib:..\..\lib\ /ndebug /v4 /out:&quot;$(OutDir)$(TargetName)Merged.dll&quot; &quot;$(OutDir)$(TargetFileName)&quot; &quot;$(OutDir)PLibOptions.dll&quot;" />
+    <Exec Command="&quot;$(ILMergeConsolePath)&quot; /lib:$(GameRefIncludeFolder) /ndebug /v4 /out:&quot;$(OutDir)$(TargetName).dll&quot; &quot;$(OutDir)$(TargetFileName)&quot; &quot;$(OutDir)PLibOptions.dll&quot;" />
   </Target>
 
 
