@@ -1,6 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
 
-using Harmony;
+using HarmonyLib;
 
 // ----------------------------------------------------------------------------
 
@@ -20,10 +20,10 @@ namespace OniMods.PacuPathingFix
             if (!isClear.HasValue) // failed to access base method
                 return true;       // skip patch and call original method
 
-            bool is_swimmable = (Grid.IsSubstantialLiquid(cell, 0.9f) || (Grid.IsLiquid(cell) && (SwimValidatorHelper.IsLiquidAbove(cell) || SwimValidatorHelper.IsLiquidBelow(cell)))) && isClear.Value;
+            bool is_swimmable = Grid.IsWorldValidCell(cell) && (Grid.IsSubstantialLiquid(cell, 0.9f) || (Grid.IsLiquid(cell) && (SwimValidatorHelper.IsLiquidAbove(cell) || SwimValidatorHelper.IsLiquidBelow(cell)))) && isClear.Value;
             nav_table.SetValid(cell, NavType.Swim, is_swimmable);
 
             return false; // skip execution of the original method
-        }                       
+        }
     }
 }

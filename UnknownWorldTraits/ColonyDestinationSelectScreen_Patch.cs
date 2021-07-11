@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-using Harmony;
+using HarmonyLib;
 using Klei.CustomSettings;
 using PeterHan.PLib.Options;
 using STRINGS;
@@ -21,9 +21,9 @@ namespace OniMods.UnknownWorldTraits
         /// </summary>        
         static void Postfix(ref NewGameSettingsPanel ___newGameSettings, ref DestinationSelectPanel ___destinationMapPanel, ref AsteroidDescriptorPanel ___startLocationProperties)
         {
-            string setting = ___newGameSettings.GetSetting(CustomGameSettingConfigs.World);
+            string setting = ___newGameSettings.GetSetting(CustomGameSettingConfigs.ClusterLayout);
             int.TryParse(___newGameSettings.GetSetting(CustomGameSettingConfigs.WorldgenSeed), out int result);
-            ColonyDestinationAsteroidData colonyDestinationAsteroidData = ___destinationMapPanel.SelectAsteroid(setting, result);
+            ColonyDestinationAsteroidBeltData colonyDestinationAsteroidData = ___destinationMapPanel.SelectAsteroid(setting, result);
 
             ___startLocationProperties.SetDescriptors(GetModifiedTraitDescriptors(colonyDestinationAsteroidData.GetTraitDescriptors()));
         }

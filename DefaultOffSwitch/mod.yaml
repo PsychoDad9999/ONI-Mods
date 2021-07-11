@@ -1,0 +1,3 @@
+title: Default Off Switch
+description: Changes the default state to "off" when building a new signal switch or power switch.
+staticID: OniMods.PsychoDad.DefaultOffSwitch

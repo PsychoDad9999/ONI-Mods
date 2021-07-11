@@ -1,20 +1,23 @@
 ﻿// ----------------------------------------------------------------------------
 
+using HarmonyLib;
 using PeterHan.PLib.Options;
 
 // ----------------------------------------------------------------------------
 
 namespace OniMods.UnknownWorldTraits
 {
-    public static class UnknownWorldTraitsMod
-    {   
+    public class UnknownWorldTraitsMod : KMod.UserMod2
+    {
         /// <summary>
         /// Register Options on mod load
         /// </summary>
-        public static void OnLoad()
+        public override void OnLoad(Harmony harmony)
         {
+            harmony.PatchAll();
+
             // Registering for the config screen
-            POptions.RegisterOptions(typeof(UnknownWorldTraitsModSettings));
+            new POptions().RegisterOptions(this, typeof(UnknownWorldTraitsModSettings));
         }
     }
 }

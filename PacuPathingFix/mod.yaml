@@ -1,0 +1,3 @@
+title: Pucu Pathfinding Fix
+description: Fixes a pathfinding bug in mixed liquids. Pacus and other swimming creatures will no longer get stuck.
+staticID: OniMods.PsychoDad.PacuPathfindingFix

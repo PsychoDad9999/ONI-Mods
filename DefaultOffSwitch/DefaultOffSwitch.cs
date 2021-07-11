@@ -1,12 +1,14 @@
 ﻿// ----------------------------------------------------------------------------
 
+using HarmonyLib;
+
 using PeterHan.PLib.Options;
 
 // ----------------------------------------------------------------------------
 
 namespace OniMods.DefaultOffSwitch
 {
-    public static class DefaultOffSwitch
+    public class DefaultOffSwitch : KMod.UserMod2
     {
         /// <summary>
         /// Mod Options
@@ -16,11 +18,13 @@ namespace OniMods.DefaultOffSwitch
         /// <summary>
         /// Register Options on mod load
         /// </summary>
-        public static void OnLoad()
+        public override void OnLoad(Harmony harmony)
         {
-            // Registering for the config screen
-            POptions.RegisterOptions(typeof(DefaultOffSwitchSettings));
+            harmony.PatchAll();
 
+            // Registering for the config screen
+            new POptions().RegisterOptions(this, typeof(DefaultOffSwitchSettings));
+            
             // Read Settings
             Options = POptions.ReadSettings<DefaultOffSwitchSettings>() ?? new DefaultOffSwitchSettings();
         }

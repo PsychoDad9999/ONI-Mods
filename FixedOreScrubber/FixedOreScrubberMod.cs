@@ -1,20 +1,26 @@
 ﻿// ----------------------------------------------------------------------------
 
+using HarmonyLib;
+
 using PeterHan.PLib.Options;
 
 // ----------------------------------------------------------------------------
 
 namespace OniMods.FixedOreScrubber
 {
-    public static class FixedOreScrubberMod
+    public class FixedOreScrubberMod : KMod.UserMod2
     {
         internal static FixedOreScrubberModSettings Options { get; private set; }
 
-        public static void OnLoad()
+        public override void OnLoad(Harmony harmony)
         {
-            POptions.RegisterOptions(typeof(FixedOreScrubberModSettings));
-            
-            Options = POptions.ReadSettingsForAssembly<FixedOreScrubberModSettings>() ?? new FixedOreScrubberModSettings();
+            harmony.PatchAll();
+
+            // Registering for the config screen
+            new POptions().RegisterOptions(this, typeof(FixedOreScrubberModSettings));
+
+            // Read Settings
+            Options = POptions.ReadSettings<FixedOreScrubberModSettings>() ?? new FixedOreScrubberModSettings();
         }
     }
 }

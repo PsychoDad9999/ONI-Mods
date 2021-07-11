@@ -1,24 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net40</TargetFramework>
+    <TargetFramework>net471</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>OniMods.PacuPathingFix</RootNamespace>
     <Configurations>Vanilla;DLC1</Configurations>
     <Optimize>true</Optimize>
     <AssemblyName>PacuPathingFix</AssemblyName>
     <Authors>PsychoDad</Authors>
-    <FileVersion>1.1.0.0</FileVersion>
+    <FileVersion>1.2.0.0</FileVersion>
     <Copyright>Copyright © PsychoDad 2021</Copyright>
     <Product>Pacu Pathing Fix</Product>
   </PropertyGroup>
   <PropertyGroup>
     <LibIncludeFolder>..\..\lib\</LibIncludeFolder>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Vanilla'">
-    <GameRefIncludeFolder>$(LibIncludeFolder)Vanilla\</GameRefIncludeFolder>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='DLC1'">
-    <GameRefIncludeFolder>$(LibIncludeFolder)DLC1\</GameRefIncludeFolder>
+  <PropertyGroup>
+    <GameRefIncludeFolder>$(LibIncludeFolder)Game\</GameRefIncludeFolder>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -34,24 +31,12 @@
       <Private>false</Private>
     </Reference>
   </ItemGroup>
-
   <ItemGroup>
-    <Content Include="Vanilla\mod_info.yaml" Link="\%(Filename)%(Extension)" Condition="'$(Configuration)'=='Vanilla'">
+    <None Update="mod.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DLC1\mod_info.yaml" Link="\%(Filename)%(Extension)" Condition="'$(Configuration)'=='DLC1'">
+    </None>
+    <None Update="mod_info.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
-  
-  <ItemGroup>
-    <Compile Remove="Vanilla\*.cs" Condition="'$(Configuration)'!='Vanilla'" />
-    <None Include="Vanilla\*.cs" Condition="'$(Configuration)'!='Vanilla'" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="DLC1\*.cs" Condition="'$(Configuration)'!='DLC1'" />
-    <None Include="DLC1\*.cs" Condition="'$(Configuration)'!='DLC1'" />
-  </ItemGroup>
-  
 </Project>
