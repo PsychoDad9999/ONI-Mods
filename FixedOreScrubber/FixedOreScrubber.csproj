@@ -3,7 +3,7 @@
     <TargetFramework>net471</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>OniMods.FixedOreScrubber</RootNamespace>
-    <Configurations>Vanilla;DLC1</Configurations>
+    <Configurations>Release</Configurations>
     <Optimize>true</Optimize>
     <AssemblyName>FixedOreScrubber</AssemblyName>
     <Authors>PsychoDad</Authors>
@@ -21,6 +21,14 @@
   <PropertyGroup>
     <ThirdPartyRefIncludeFolder>$(LibIncludeFolder)ThirdParty\</ThirdPartyRefIncludeFolder>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="mod_info.yaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="mod_info.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ILMerge" Version="3.0.41" />
   </ItemGroup>
@@ -58,9 +66,6 @@
 
   <ItemGroup>
     <None Update="mod.yaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="mod_info.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -3,7 +3,7 @@
     <TargetFramework>net471</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>OniMods.DefaultOffSwitch</RootNamespace>
-    <Configurations>Vanilla;DLC1</Configurations>
+    <Configurations>Release</Configurations>
     <Optimize>true</Optimize>
     <AssemblyName>DefaultOffSwitch</AssemblyName>
     <Authors>PsychoDad</Authors>
