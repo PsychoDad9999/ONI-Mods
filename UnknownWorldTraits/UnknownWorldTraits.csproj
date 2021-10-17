@@ -7,7 +7,7 @@
     <Optimize>true</Optimize>
     <AssemblyName>UnknownWorldTraits</AssemblyName>
     <Authors>PsychoDad</Authors>
-    <FileVersion>1.3</FileVersion>
+    <FileVersion>1.4</FileVersion>
     <Copyright>Copyright © PsychoDad 2021</Copyright>
     <Product>Unknown World Traits</Product>    
   </PropertyGroup>

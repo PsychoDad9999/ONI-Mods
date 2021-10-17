@@ -9,6 +9,11 @@ namespace OniMods.UnknownWorldTraits
 {
     public class UnknownWorldTraitsMod : KMod.UserMod2
     {
+        internal static string WorldTraitReplacementText { get; } = "[REDACTED]";
+
+        internal static string ToolTipReplacementText { get; } = "Classified Information";
+        
+
         /// <summary>
         /// Register Options on mod load
         /// </summary>

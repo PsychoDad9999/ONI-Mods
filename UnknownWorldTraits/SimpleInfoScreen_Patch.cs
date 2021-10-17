@@ -12,13 +12,12 @@ using ProcGen;
 
 namespace OniMods.UnknownWorldTraits
 {
-
-    [HarmonyPatch(typeof(SaveGame))]
-    [HarmonyPatch(nameof(SaveGame.GetColonyToolTip))]
-    static class SaveGame_GetColonyToolTip_Patch
+    [HarmonyPatch(typeof(SimpleInfoScreen))]
+    [HarmonyPatch("RefreshWorld")]
+    static class SimpleInfoScreen_Patch
     {
         /// <summary>
-        /// Patch GetColonyToolTip to hide world traits on Colony-ToolTip
+        /// Patch SimpleInfoScreen.RefreshWorld to hide the world traits on the Starmap
         /// </summary>
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
@@ -27,25 +26,32 @@ namespace OniMods.UnknownWorldTraits
             // Get WorldTrait.Name Property
             PropertyInfo worldTraitNamePropInfo = typeof(WorldTrait).GetProperty(nameof(WorldTrait.name));
 
+            // Get WorldTrait.Name Property
+            PropertyInfo worldTraitDescriptionPropInfo = typeof(WorldTrait).GetProperty(nameof(WorldTrait.description));
+
             // Get "Get-Accessors" of WorldTrait.Name Property
             MethodInfo worldTraitGetName = worldTraitNamePropInfo?.GetAccessors()?.Where(x => x.ReturnType != typeof(void)).FirstOrDefault();
+
+            // Get "Get-Accessors" of WorldTrait.Description Property
+            MethodInfo worldTraitGetDescription = worldTraitDescriptionPropInfo?.GetAccessors()?.Where(x => x.ReturnType != typeof(void)).FirstOrDefault();
 
             // Get op_Implicit MethodInfo
             MethodInfo stringEntry_Implicit = typeof(StringEntry).GetMethod("op_Implicit");
 
-            if (worldTraitGetName != null && stringEntry_Implicit != null)
+            if (worldTraitGetName != null && worldTraitGetDescription != null && stringEntry_Implicit != null)
             {
                 for (int i = 0; i < codes.Count; i++)
                 {
+                    // Patch 
                     if (codes[i].opcode == OpCodes.Callvirt && codes[i].operand as MethodInfo == worldTraitGetName)
-                    {                        
+                    {
                         if (i > 0 && i <= codes.Count - 3)
                         {
                             // make some consistency checks
                             CodeInstruction previousCodeInstruction = codes[i - 1];
-                            CodeInstruction lastCodeInstruction = codes[i + 2];                            
+                            CodeInstruction lastCodeInstruction = codes[i + 2];
 
-                            if (previousCodeInstruction.opcode == OpCodes.Ldloc_S && 
+                            if (previousCodeInstruction.opcode == OpCodes.Ldloc_S &&
                                 lastCodeInstruction.opcode == OpCodes.Call && lastCodeInstruction.operand as MethodInfo == stringEntry_Implicit)
                             {
                                 // Patch ToolTip
@@ -57,12 +63,36 @@ namespace OniMods.UnknownWorldTraits
                                 i += 2;
                                 continue;
                             }
-                        }                        
+                        }
+                    }
+
+                    // Patch Tool Tip
+                    if (codes[i].opcode == OpCodes.Callvirt && codes[i].operand as MethodInfo == worldTraitGetDescription)
+                    {
+                        if (i > 0 && i <= codes.Count - 3)
+                        {
+                            // make some consistency checks
+                            CodeInstruction previousCodeInstruction = codes[i - 1];
+                            CodeInstruction lastCodeInstruction = codes[i + 2];
+
+                            if (previousCodeInstruction.opcode == OpCodes.Ldloc_S &&
+                                lastCodeInstruction.opcode == OpCodes.Call && lastCodeInstruction.operand as MethodInfo == stringEntry_Implicit)
+                            {
+                                // Patch ToolTip
+                                codes[i - 1] = new CodeInstruction(OpCodes.Nop);
+                                codes[i] = new CodeInstruction(OpCodes.Ldstr, UnknownWorldTraitsMod.ToolTipReplacementText);
+                                codes[i + 1] = new CodeInstruction(OpCodes.Nop);
+                                codes[i + 2] = new CodeInstruction(OpCodes.Nop);
+
+                                i += 2;
+                                continue;
+                            }
+                        }
                     }
                 }
             }
-                           
+
             return codes.AsEnumerable();
         }
-    }    
+    }
 }

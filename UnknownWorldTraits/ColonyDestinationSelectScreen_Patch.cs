@@ -37,17 +37,24 @@ namespace OniMods.UnknownWorldTraits
         private static IList<AsteroidDescriptor> GetModifiedTraitDescriptors(IList<AsteroidDescriptor> traitDescriptors)
         {            
             // Read Mod Settings
-            UnknownWorldTraitsModSettings modSettings = POptions.ReadSettings<UnknownWorldTraitsModSettings>() ?? new UnknownWorldTraitsModSettings();                        
-
+            UnknownWorldTraitsModSettings modSettings = POptions.ReadSettings<UnknownWorldTraitsModSettings>() ?? new UnknownWorldTraitsModSettings();
+           
             for (int i = 0; i < traitDescriptors.Count; i++)
-            {
+            {                
+                if (traitDescriptors[i].text == null || traitDescriptors[i].text.Length == 0)
+                    continue;
+               
                 // skip if world has no Traits, e.g. Terra
                 if (traitDescriptors[i].text == WORLD_TRAITS.NO_TRAITS.NAME)
                     continue;
 
+                // skip colony names. Only world traits starts with <color>
+                if (!traitDescriptors[i].text.StartsWith("<color="))
+                    continue;
+
                 AsteroidDescriptor traitDescriptor;
-                traitDescriptor.text = CreateTraitDescriptorText(traitDescriptors[i].text, "[REDACTED]", modSettings.ShowTraitColor);
-                traitDescriptor.tooltip = "Classified by Gravitas security protocol";
+                traitDescriptor.text = CreateTraitDescriptorText(traitDescriptors[i].text, UnknownWorldTraitsMod.WorldTraitReplacementText, modSettings.ShowTraitColor);
+                traitDescriptor.tooltip = UnknownWorldTraitsMod.ToolTipReplacementText;
                 traitDescriptor.bands = traitDescriptors[i].bands;
 
                 traitDescriptors[i] = traitDescriptor;
