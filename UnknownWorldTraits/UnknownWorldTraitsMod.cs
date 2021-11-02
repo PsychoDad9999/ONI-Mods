@@ -1,7 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
 
 using HarmonyLib;
-using PeterHan.PLib.Options;
 
 // ----------------------------------------------------------------------------
 
@@ -22,9 +21,6 @@ namespace OniMods.UnknownWorldTraits
         public override void OnLoad(Harmony harmony)
         {
             harmony.PatchAll();
-
-            // Registering for the config screen
-            new POptions().RegisterOptions(this, typeof(UnknownWorldTraitsModSettings));
         }
     }
 }

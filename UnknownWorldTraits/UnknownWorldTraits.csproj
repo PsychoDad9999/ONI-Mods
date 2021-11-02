@@ -7,7 +7,7 @@
     <Optimize>true</Optimize>
     <AssemblyName>UnknownWorldTraits</AssemblyName>
     <Authors>PsychoDad</Authors>
-    <FileVersion>1.4</FileVersion>
+    <FileVersion>1.5</FileVersion>
     <Copyright>Copyright © PsychoDad 2021</Copyright>
     <Product>Unknown World Traits</Product>    
   </PropertyGroup>
@@ -21,9 +21,6 @@
     <ThirdPartyRefIncludeFolder>$(LibIncludeFolder)ThirdParty\</ThirdPartyRefIncludeFolder>
   </PropertyGroup>
  
-  <ItemGroup>
-    <PackageReference Include="ILMerge" Version="3.0.41" />
-  </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>$(GameRefIncludeFolder)0Harmony.dll</HintPath>
@@ -44,16 +41,7 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(GameRefIncludeFolder)Newtonsoft.Json.dll</HintPath>
       <Private>false</Private>
-    </Reference>
-    <Reference Include="PLibCore">
-      <HintPath>$(ThirdPartyRefIncludeFolder)\PLibCore.dll</HintPath>
-    </Reference>
-    <Reference Include="PLibUI">
-      <HintPath>$(ThirdPartyRefIncludeFolder)\PLibUI.dll</HintPath>
-    </Reference>
-    <Reference Include="PLibOptions">
-      <HintPath>$(ThirdPartyRefIncludeFolder)\PLibOptions.dll</HintPath>
-    </Reference>
+    </Reference>    
   </ItemGroup>
 
   <ItemGroup>
@@ -64,8 +52,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&quot;$(ILMergeConsolePath)&quot; /lib:$(GameRefIncludeFolder) /ndebug /v4 /out:&quot;$(OutDir)$(TargetName).dll&quot; &quot;$(OutDir)$(TargetFileName)&quot; &quot;$(OutDir)PLibCore.dll&quot; &quot;$(OutDir)PLibUI.dll&quot; &quot;$(OutDir)PLibOptions.dll&quot;" />
-  </Target>
 </Project>
