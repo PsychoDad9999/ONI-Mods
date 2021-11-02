@@ -12,7 +12,6 @@ using ProcGen;
 
 namespace OniMods.UnknownWorldTraits
 {
-
     [HarmonyPatch(typeof(SaveGame))]
     [HarmonyPatch(nameof(SaveGame.GetColonyToolTip))]
     static class SaveGame_GetColonyToolTip_Patch
@@ -50,7 +49,7 @@ namespace OniMods.UnknownWorldTraits
                             {
                                 // Patch ToolTip
                                 codes[i - 1] = new CodeInstruction(OpCodes.Nop);
-                                codes[i] = new CodeInstruction(OpCodes.Ldstr, UnknownWorldTraitsMod.WorldTraitReplacementText);
+                                codes[i] = new CodeInstruction(OpCodes.Ldstr, UnknownWorldTraitsMod.UnknownTraitText);
                                 codes[i + 1] = new CodeInstruction(OpCodes.Nop);
                                 codes[i + 2] = new CodeInstruction(OpCodes.Nop);
 
@@ -64,5 +63,5 @@ namespace OniMods.UnknownWorldTraits
                            
             return codes.AsEnumerable();
         }
-    }    
+    } 
 }

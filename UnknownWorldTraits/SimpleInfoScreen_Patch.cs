@@ -23,17 +23,11 @@ namespace OniMods.UnknownWorldTraits
         {
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
 
-            // Get WorldTrait.Name Property
-            PropertyInfo worldTraitNamePropInfo = typeof(WorldTrait).GetProperty(nameof(WorldTrait.name));
-
-            // Get WorldTrait.Name Property
-            PropertyInfo worldTraitDescriptionPropInfo = typeof(WorldTrait).GetProperty(nameof(WorldTrait.description));
-
             // Get "Get-Accessors" of WorldTrait.Name Property
-            MethodInfo worldTraitGetName = worldTraitNamePropInfo?.GetAccessors()?.Where(x => x.ReturnType != typeof(void)).FirstOrDefault();
+            MethodInfo worldTraitGetName = typeof(WorldTrait).GetProperty(nameof(WorldTrait.name))?.GetAccessors()?.Where(x => x.ReturnType != typeof(void)).FirstOrDefault();
 
             // Get "Get-Accessors" of WorldTrait.Description Property
-            MethodInfo worldTraitGetDescription = worldTraitDescriptionPropInfo?.GetAccessors()?.Where(x => x.ReturnType != typeof(void)).FirstOrDefault();
+            MethodInfo worldTraitGetDescription = typeof(WorldTrait).GetProperty(nameof(WorldTrait.description))?.GetAccessors()?.Where(x => x.ReturnType != typeof(void)).FirstOrDefault();
 
             // Get op_Implicit MethodInfo
             MethodInfo stringEntry_Implicit = typeof(StringEntry).GetMethod("op_Implicit");
@@ -56,7 +50,7 @@ namespace OniMods.UnknownWorldTraits
                             {
                                 // Patch ToolTip
                                 codes[i - 1] = new CodeInstruction(OpCodes.Nop);
-                                codes[i] = new CodeInstruction(OpCodes.Ldstr, UnknownWorldTraitsMod.WorldTraitReplacementText);
+                                codes[i] = new CodeInstruction(OpCodes.Ldstr, UnknownWorldTraitsMod.UnknownTraitText);
                                 codes[i + 1] = new CodeInstruction(OpCodes.Nop);
                                 codes[i + 2] = new CodeInstruction(OpCodes.Nop);
 
@@ -80,7 +74,7 @@ namespace OniMods.UnknownWorldTraits
                             {
                                 // Patch ToolTip
                                 codes[i - 1] = new CodeInstruction(OpCodes.Nop);
-                                codes[i] = new CodeInstruction(OpCodes.Ldstr, UnknownWorldTraitsMod.ToolTipReplacementText);
+                                codes[i] = new CodeInstruction(OpCodes.Ldstr, UnknownWorldTraitsMod.ClassifiedInformationText);
                                 codes[i + 1] = new CodeInstruction(OpCodes.Nop);
                                 codes[i + 2] = new CodeInstruction(OpCodes.Nop);
 
