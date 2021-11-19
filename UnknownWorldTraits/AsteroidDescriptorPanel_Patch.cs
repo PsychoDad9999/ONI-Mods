@@ -15,7 +15,7 @@ using STRINGS;
 namespace OniMods.UnknownWorldTraits
 {
     static class AsteroidDescriptorPanel_Patch
-    {
+    {        
         #region SpawnAsteroidLine Patch
 
         [HarmonyPatch(typeof(AsteroidDescriptorPanel))]
@@ -38,13 +38,19 @@ namespace OniMods.UnknownWorldTraits
                 // GetAccessor of ProcGen.WorldTrait.colorHex Property
                 MethodInfo worldTrait_GetHexColor = typeof(WorldTrait).GetProperty(nameof(WorldTrait.colorHex))?.GetAccessors()?.Where(x => x.ReturnType != typeof(void)).FirstOrDefault();
 
+                // Assets.GetSprite Method
+                MethodInfo assets_GetSprite = typeof(Assets).GetMethod(nameof(Assets.GetSprite));
+                MethodInfo hashedString_Implicit = typeof(HashedString).GetMethod("op_Implicit", new[] { typeof(string) });
+                
+
                 bool isToolTipPatched = false;
                 bool isColorPatched = false;
+                bool isIconPatched = false;
 
                 // Patch the ToolTip
-                if (toolTip_SetSimpleTooltip != null && worldTrait_GetHexColor != null)
+                if (toolTip_SetSimpleTooltip != null && worldTrait_GetHexColor != null && assets_GetSprite != null && hashedString_Implicit != null)
                 {
-                    for (int idx = codes.Count - 1; idx > 0 && (!isToolTipPatched || !isColorPatched); idx--)
+                    for (int idx = codes.Count - 1; idx > 0 && (!isToolTipPatched || !isColorPatched || !isIconPatched); idx--)
                     {
                         if (codes[idx].opcode == OpCodes.Callvirt && codes[idx].operand as MethodInfo == toolTip_SetSimpleTooltip)
                         {
@@ -78,7 +84,27 @@ namespace OniMods.UnknownWorldTraits
                                 }
                             }
                         }
-                        else // Patch the color of the circle here
+                        else if(codes[idx].opcode == OpCodes.Call && codes[idx].operand as MethodInfo == hashedString_Implicit)
+                        {
+                            if(idx < codes.Count - 1)
+                            {
+                                if(codes[idx + 1].opcode == OpCodes.Call && codes[idx + 1].operand as MethodInfo == assets_GetSprite)
+                                {
+                                    // Patch the icon
+                                    List<CodeInstruction> insertInstructions = new List<CodeInstruction>()
+                                    {
+                                        new CodeInstruction(OpCodes.Pop),
+                                        new CodeInstruction(OpCodes.Ldstr, UnknownWorldTraitsMod.SpriteName),
+                                    };
+
+                                    codes.InsertRange(idx, insertInstructions);
+                                    // No need to modify the index after inserting instructions, because the loop runs backwards.
+                                    isIconPatched = true;
+                                    continue;
+                                }
+                            }                           
+                        }
+                        else // Patch icon color
                         {
                             if (codes[idx].opcode == OpCodes.Callvirt && codes[idx].operand as MethodInfo == worldTrait_GetHexColor)
                             {
@@ -115,30 +141,46 @@ namespace OniMods.UnknownWorldTraits
             /// </summary>        
             static void Prefix(ref IList<AsteroidDescriptor> descriptors)
             {
-                // Create a new List because we want to modify the argument without modifing
+                // Creates a new List, because we want to modify the argument without modifing
+                // the original list in the ColonyDestinationAsteroidBeltData object.
+                // Pass the modified descriptor list to the original function
+                descriptors = CreateModifiedTraitDescriptors(descriptors);                
+            }
+
+
+
+            /// <summary>
+            /// Creates a modified list of trait descriptors
+            /// </summary>
+            private static List<AsteroidDescriptor> CreateModifiedTraitDescriptors(IList<AsteroidDescriptor> descriptors)
+            {
+                // Create a new List because we want to modify the list without modifing
                 // the original list in the ColonyDestinationAsteroidBeltData object
-                IList<AsteroidDescriptor> modifiedDescriptors = new List<AsteroidDescriptor>();
+                List<AsteroidDescriptor> modifiedDescriptors = new List<AsteroidDescriptor>();
 
-                foreach (AsteroidDescriptor descriptor in descriptors)
+                if (descriptors != null)
                 {
-                    // copy structure
-                    AsteroidDescriptor modifiedDescriptor = new AsteroidDescriptor(descriptor.text, descriptor.tooltip, descriptor.associatedColor, descriptor.bands);
-
-                    if (modifiedDescriptor.text != WORLD_TRAITS.NO_TRAITS.NAME)
+                    foreach (AsteroidDescriptor descriptor in descriptors)
                     {
-                        modifiedDescriptor.text = UnknownWorldTraitsMod.UnknownTraitText;
-                        modifiedDescriptor.tooltip = String.Empty;
-                        modifiedDescriptor.associatedColor = new UnityEngine.Color(255, 255, 255);
-                    }
+                        // copy structure
+                        AsteroidDescriptor modifiedDescriptor = new AsteroidDescriptor(descriptor.text, descriptor.tooltip, descriptor.associatedColor, descriptor.bands, descriptor.associatedIcon);
 
-                    modifiedDescriptors.Add(modifiedDescriptor);                    
+                        if (modifiedDescriptor.text != WORLD_TRAITS.NO_TRAITS.NAME)
+                        {
+                            modifiedDescriptor.text = UnknownWorldTraitsMod.UnknownTraitText;
+                            modifiedDescriptor.tooltip = String.Empty;
+                            modifiedDescriptor.associatedColor = new UnityEngine.Color(255, 255, 255);
+                            modifiedDescriptor.associatedIcon = UnknownWorldTraitsMod.SpriteName;
+                        }
+
+                        modifiedDescriptors.Add(modifiedDescriptor);
+                    }
                 }
 
-                // pass the modified descriptor list to the original function
-                descriptors = modifiedDescriptors;
+                return modifiedDescriptors;
             }
         }
 
-        #endregion
+        #endregion        
     }
 }

@@ -13,14 +13,16 @@ namespace OniMods.UnknownWorldTraits
         internal static string UnknownWorldTraitsText { get; } = "Unknown World Traits";      
 
         internal static string ClassifiedInformationText { get; } = "Classified Information";
-        
+
+        internal static string SpriteName { get; } = "unknown";
+
 
         /// <summary>
         /// Register Options on mod load
         /// </summary>
         public override void OnLoad(Harmony harmony)
         {
-            harmony.PatchAll();
+            harmony.PatchAll();            
         }
     }
 }
