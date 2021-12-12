@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using ProcGen;
 using STRINGS;
+using UnityEngine;
 
 // ----------------------------------------------------------------------------
 
@@ -129,22 +130,33 @@ namespace OniMods.UnknownWorldTraits
 
         #endregion
     
+
         #region SetTraitDescriptors Patch
 
         [HarmonyPatch(typeof(AsteroidDescriptorPanel))]
-        [HarmonyPatch(nameof(AsteroidDescriptorPanel.SetTraitDescriptors))]
+        [HarmonyPatch(nameof(AsteroidDescriptorPanel.SetTraitDescriptors), new Type[] { typeof(List<IList<AsteroidDescriptor>> ), typeof(bool), typeof(List<Tuple<string, Sprite>>)})]
         static class SetTraitDescriptors_Patch
         {
             /// <summary>
             /// Patch AsteroidDescriptorPanel.SetTraitDescriptors to modify the displayed Trait Descriptors
             /// This is used in the details panel on the right hand side of the Destination Selection Screen (Spaced Out DLC and Base Game)
             /// </summary>        
-            static void Prefix(ref IList<AsteroidDescriptor> descriptors)
+            static void Prefix(ref List<IList<AsteroidDescriptor>> descriptorSets)
             {
+                List<IList<AsteroidDescriptor>> modifiedDescriptorSets = new List<IList<AsteroidDescriptor>>();
+
                 // Creates a new List, because we want to modify the argument without modifing
                 // the original list in the ColonyDestinationAsteroidBeltData object.
                 // Pass the modified descriptor list to the original function
-                descriptors = CreateModifiedTraitDescriptors(descriptors);                
+                if (descriptorSets != null)
+                {
+                    foreach (IList<AsteroidDescriptor> descriptors in descriptorSets)
+                    {
+                        modifiedDescriptorSets.Add(CreateModifiedTraitDescriptors(descriptors));
+                    }
+                }
+
+                descriptorSets = modifiedDescriptorSets;
             }
 
 
@@ -182,5 +194,7 @@ namespace OniMods.UnknownWorldTraits
         }
 
         #endregion        
+
+
     }
 }
