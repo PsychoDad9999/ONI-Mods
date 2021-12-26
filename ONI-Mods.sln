@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30309.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedOreScrubber", "FixedOreScrubber\FixedOreScrubber.csproj", "{29B7EF33-2AF4-4B23-AC45-4004B9DBB3F8}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PacuPathingFix", "PacuPathingFix\PacuPathingFix.csproj", "{BA00E955-C4A4-4304-89DA-EB7E8752ECC6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DefaultOffSwitch", "DefaultOffSwitch\DefaultOffSwitch.csproj", "{8C500814-C121-4617-B292-4DD6999C3123}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDiagnosticsFix", "FoodDiagnosticsFix\FoodDiagnosticsFix.csproj", "{57D3DF07-5B86-4EFF-987F-67EF3664F6E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +26,8 @@ Global
 		{BA00E955-C4A4-4304-89DA-EB7E8752ECC6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C500814-C121-4617-B292-4DD6999C3123}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C500814-C121-4617-B292-4DD6999C3123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57D3DF07-5B86-4EFF-987F-67EF3664F6E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57D3DF07-5B86-4EFF-987F-67EF3664F6E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OniMods.FoodDiagnosticsFix</RootNamespace>
+    <Configurations>Release</Configurations>
+    <Optimize>true</Optimize>
+    <AssemblyName>FoodDiagnosticsFix</AssemblyName>
+    <Authors>PsychoDad</Authors>
+    <FileVersion>1.0</FileVersion>
+    <Copyright>Copyright © PsychoDad 2021</Copyright>
+    <Product>Food Diagnostics Fix</Product>    
+  </PropertyGroup>
+  <PropertyGroup>
+    <LibIncludeFolder>..\..\lib\</LibIncludeFolder>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GameRefIncludeFolder>$(LibIncludeFolder)Game\</GameRefIncludeFolder>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ThirdPartyRefIncludeFolder>$(LibIncludeFolder)ThirdParty\</ThirdPartyRefIncludeFolder>
+  </PropertyGroup>
+ 
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(GameRefIncludeFolder)0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(GameRefIncludeFolder)Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>$(GameRefIncludeFolder)Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(GameRefIncludeFolder)UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(GameRefIncludeFolder)Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>    
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="mod.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="mod_info.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
