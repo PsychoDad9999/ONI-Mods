@@ -16,6 +16,8 @@ namespace OniMods.UnknownWorldTraits
 
         internal static string SpriteName { get; } = "unknown";
 
+        internal static string SpriteNameAsFilePath { get; } = @"/unknown";
+
 
         /// <summary>
         /// Register Options on mod load

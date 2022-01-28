@@ -29,14 +29,20 @@ namespace OniMods.UnknownWorldTraits
             // Get "Get-Accessors" of WorldTrait.Description Property
             MethodInfo worldTraitGetDescription = typeof(WorldTrait).GetProperty(nameof(WorldTrait.description))?.GetAccessors()?.Where(x => x.ReturnType != typeof(void)).FirstOrDefault();
 
+            // Get "Get-Accessors" of WorldTrait.colorHex Property
+            MethodInfo worldTraitGetColorHex = typeof(WorldTrait).GetProperty(nameof(WorldTrait.colorHex))?.GetAccessors()?.Where(x => x.ReturnType != typeof(void)).FirstOrDefault();
+
+            // Get WorldTrait.filePath Field
+            FieldInfo worldTraitGetFilePath = AccessTools.Field(typeof(WorldTrait), nameof(WorldTrait.filePath));
+
             // Get op_Implicit MethodInfo
             MethodInfo stringEntry_Implicit = typeof(StringEntry).GetMethod("op_Implicit");
 
-            if (worldTraitGetName != null && worldTraitGetDescription != null && stringEntry_Implicit != null)
+            if (worldTraitGetName != null && worldTraitGetDescription != null && worldTraitGetColorHex != null && worldTraitGetFilePath != null && stringEntry_Implicit != null)
             {
                 for (int i = 0; i < codes.Count; i++)
                 {
-                    // Patch 
+                    // Patch String
                     if (codes[i].opcode == OpCodes.Callvirt && codes[i].operand as MethodInfo == worldTraitGetName)
                     {
                         if (i > 0 && i <= codes.Count - 3)
@@ -79,6 +85,34 @@ namespace OniMods.UnknownWorldTraits
                                 codes[i + 2] = new CodeInstruction(OpCodes.Nop);
 
                                 i += 2;
+                                continue;
+                            }
+                        }
+                    }
+
+                    // Patch Icon color
+                    if (codes[i].opcode == OpCodes.Callvirt && codes[i].operand as MethodInfo == worldTraitGetColorHex)
+                    {
+                        if (i > 0)
+                        {
+                            if (codes[i - 1].opcode == OpCodes.Ldloc_S)
+                            {
+                                codes[i - 1] = new CodeInstruction(OpCodes.Nop);
+                                codes[i] = new CodeInstruction(OpCodes.Ldstr, "000000"); // Use Black Color
+                                continue;
+                            }
+                        }
+                    }
+
+                    // Patch Icon
+                    if (codes[i].opcode == OpCodes.Ldfld && codes[i].operand as FieldInfo == worldTraitGetFilePath)
+                    {
+                        if (i > 0)
+                        {
+                            if (codes[i - 1].opcode == OpCodes.Ldloc_S)
+                            {
+                                codes[i - 1] = new CodeInstruction(OpCodes.Nop);
+                                codes[i] = new CodeInstruction(OpCodes.Ldstr, UnknownWorldTraitsMod.SpriteNameAsFilePath);
                                 continue;
                             }
                         }
