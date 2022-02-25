@@ -7,8 +7,8 @@
     <Optimize>true</Optimize>
     <AssemblyName>FoodDiagnosticsFix</AssemblyName>
     <Authors>PsychoDad</Authors>
-    <FileVersion>1.0</FileVersion>
-    <Copyright>Copyright © PsychoDad 2021</Copyright>
+    <FileVersion>1.1</FileVersion>
+    <Copyright>Copyright © PsychoDad 2022</Copyright>
     <Product>Food Diagnostics Fix</Product>    
   </PropertyGroup>
   <PropertyGroup>

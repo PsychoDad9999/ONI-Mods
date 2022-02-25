@@ -41,7 +41,15 @@ namespace OniMods.FoodDiagnosticsFix
                     __result.opinion = ColonyDiagnostic.DiagnosticResult.Opinion.Concern;
                     float currentValue = __instance.tracker.GetCurrentValue();
                     float minRequiredValue = dupesCount * caloriesPerDupePerDay;
-                    __result.Message = string.Format(MISC.NOTIFICATIONS.FOODLOW.TOOLTIP, GameUtil.GetFormattedCalories(currentValue), GameUtil.GetFormattedCalories(Mathf.Abs(minRequiredValue)));
+
+                    string formattedCalories = GameUtil.GetFormattedCalories(currentValue);
+                    string formattedCalories2 = GameUtil.GetFormattedCalories(Mathf.Abs(minRequiredValue));
+
+                    string text = MISC.NOTIFICATIONS.FOODLOW.TOOLTIP;
+                    text = text.Replace("{0}", formattedCalories);
+                    text = text.Replace("{1}", formattedCalories2);
+
+                    __result.Message = text;              
                 }
             }
 
