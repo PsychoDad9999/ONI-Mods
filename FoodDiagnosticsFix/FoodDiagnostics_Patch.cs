@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 
 using HarmonyLib;
+using Klei.AI;
 using Klei.CustomSettings;
 using STRINGS;
 using UnityEngine;
@@ -21,8 +22,8 @@ namespace OniMods.FoodDiagnosticsFix
         static bool Prefix(FoodDiagnostic __instance, ref ColonyDiagnostic.DiagnosticResult __result)
         {            
             __result = new ColonyDiagnostic.DiagnosticResult(ColonyDiagnostic.DiagnosticResult.Opinion.Normal, UI.COLONY_DIAGNOSTICS.GENERIC_CRITERIA_PASS);
+           
 
-            List<MinionIdentity> worldItems = Components.LiveMinionIdentities.GetWorldItems(__instance.worldID);
             if (__instance.tracker.GetDataTimeLength() < 10f)
             {
                 __result.opinion = ColonyDiagnostic.DiagnosticResult.Opinion.Normal;
@@ -30,26 +31,22 @@ namespace OniMods.FoodDiagnosticsFix
             }
             else
             {
+                List<MinionIdentity> dupes = Components.LiveMinionIdentities.GetWorldItems(__instance.worldID);
                 float trackerSampleCountSeconds = Traverse.Create<FoodDiagnostic>().Field("trackerSampleCountSeconds").GetValue<float>();
-                float caloriesPerDupePerDay = GetRequiredFoodPerDupe();
+                float requiredCaloriesPerCycle = GetRequiredFoodPerCycleByAttributeModifier(dupes);
 
                 int daysReserve = 3; // show warning if food doesn't last for 3 days
-                int dupesCount = worldItems.Count;
 
-                if (caloriesPerDupePerDay * dupesCount * (float)daysReserve > __instance.tracker.GetAverageValue(trackerSampleCountSeconds))
+                if (requiredCaloriesPerCycle * daysReserve > __instance.tracker.GetAverageValue(trackerSampleCountSeconds))
                 {
                     __result.opinion = ColonyDiagnostic.DiagnosticResult.Opinion.Concern;
                     float currentValue = __instance.tracker.GetCurrentValue();
-                    float minRequiredValue = dupesCount * caloriesPerDupePerDay;
-
-                    string formattedCalories = GameUtil.GetFormattedCalories(currentValue);
-                    string formattedCalories2 = GameUtil.GetFormattedCalories(Mathf.Abs(minRequiredValue));
 
                     string text = MISC.NOTIFICATIONS.FOODLOW.TOOLTIP;
-                    text = text.Replace("{0}", formattedCalories);
-                    text = text.Replace("{1}", formattedCalories2);
+                    text = text.Replace("{0}", GameUtil.GetFormattedCalories(currentValue));
+                    text = text.Replace("{1}", GameUtil.GetFormattedCalories(requiredCaloriesPerCycle));
 
-                    __result.Message = text;              
+                    __result.Message = text;
                 }
             }
 
@@ -58,11 +55,60 @@ namespace OniMods.FoodDiagnosticsFix
 
 
 
-        static float GetRequiredFoodPerDupe()
+        private static float ToCaloriesPerCycle(float caloriesPerSec)
+        {
+            return caloriesPerSec * 600f;
+        }
+
+
+        /// <summary>
+        ///  Get required food per cycle by attribute modifiers
+        /// </summary>
+        /// <returns>Returns calories per cycle</returns>
+        private static float GetRequiredFoodPerCycleByAttributeModifier(List<MinionIdentity> dupes)
+        {
+            float totalCalories = 0;
+
+            if (dupes != null)
+            {               
+                foreach (MinionIdentity dupe in dupes)
+                {
+                    float caloriesPerSecond = dupe.GetAmounts().Get(Db.Get().Amounts.Calories).GetDelta();
+
+                    // "tummyless" attribute adds float.PositiveInfinity
+                    if (caloriesPerSecond != float.PositiveInfinity)
+                    {
+                        totalCalories += ToCaloriesPerCycle(caloriesPerSecond);
+                    }
+                }
+            }
+
+            return Mathf.Abs(totalCalories);
+        }
+
+
+        /// <summary>
+        /// Get required food per cycle by difficulty setting
+        /// </summary>
+        /// <returns>Returns calories per cycle</returns>
+        private static float GetRequiredFoodPerClycleByDifficultySetting(List<MinionIdentity> dupes)
+        {
+            if(dupes != null)
+            {
+                return GetRequiredFoodPerDupeByDifficultySetting() * dupes.Count;
+            }
+            else
+            {
+                return 0f;
+            }
+        }
+
+
+        private static float GetRequiredFoodPerDupeByDifficultySetting()
         {
             SettingLevel currentQualitySetting = CustomGameSettings.Instance.GetCurrentQualitySetting(CustomGameSettingConfigs.CalorieBurn);
 
-            switch(currentQualitySetting.id)
+            switch (currentQualitySetting.id)
             {
                 case "VeryHard":
                     return 2000000f;  //2000Kcal
@@ -78,7 +124,7 @@ namespace OniMods.FoodDiagnosticsFix
 
                 case "Disabled":
                     return 0f;
-            }           
+            }
         }
     }    
 }
