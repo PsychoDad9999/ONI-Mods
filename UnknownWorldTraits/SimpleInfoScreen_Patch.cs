@@ -13,7 +13,7 @@ using ProcGen;
 namespace OniMods.UnknownWorldTraits
 {
     [HarmonyPatch(typeof(SimpleInfoScreen))]
-    [HarmonyPatch("RefreshWorld")]
+    [HarmonyPatch("RefreshWorldPanel")]
     static class SimpleInfoScreen_Patch
     {
         /// <summary>
