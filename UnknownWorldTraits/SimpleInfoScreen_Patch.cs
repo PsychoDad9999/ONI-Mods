@@ -17,7 +17,7 @@ namespace OniMods.UnknownWorldTraits
     static class SimpleInfoScreen_Patch
     {
         /// <summary>
-        /// Patch SimpleInfoScreen.RefreshWorld to hide the world traits on the Starmap
+        /// Patch SimpleInfoScreen.RefreshWorldPanel (previously RefreshWorld) to hide the world traits on the Starmap
         /// </summary>
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
