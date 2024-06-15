@@ -13,11 +13,11 @@ using ProcGen;
 namespace OniMods.UnknownWorldTraits
 {
     [HarmonyPatch(typeof(SimpleInfoScreen))]
-    [HarmonyPatch("RefreshWorld")]
+    [HarmonyPatch("RefreshWorldPanel")]
     static class SimpleInfoScreen_Patch
     {
         /// <summary>
-        /// Patch SimpleInfoScreen.RefreshWorld to hide the world traits on the Starmap
+        /// Patch SimpleInfoScreen.RefreshWorldPanel (previously RefreshWorld) to hide the world traits on the Starmap
         /// </summary>
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
